@@ -6,7 +6,8 @@ import time
 from pbconf import(
     fb_page_id,
     fb_access_token,
-    fb_message
+    fb_message,
+    archive_path
     )
 
 print("Contacting Facebook")
@@ -23,7 +24,7 @@ for page in resp['data']:
 print("Uploading")
 
 now = time.strftime("%Y-%m-%d-%H-%M-%S")
-status= graph.put_photo(image=open('/home/pi/PB_archive/facebook.jpg','rb'), message = fb_message + now)
+status= graph.put_photo(image=open(archive_path +'photobooth.jpg','rb'), message = fb_message + now)
 print("Uploaded to Facebook")
 
 

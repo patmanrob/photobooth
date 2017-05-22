@@ -1,16 +1,15 @@
 #!/bin/bash
 echo resizing
-mogrify -resize 968x648 /home/pi/photobooth_images/*.jpg
-#convert /home/pi/photobooth_images/1.jpg +polaroid /home/pi/photobooth_images/1.jpg
+mogrify -resize 968x648 /home/pi/photobooth/images/*.jpg
 echo Montage making
-montage /home/pi/photobooth_images/*.jpg -tile 2x2 -geometry +30+30 -texture /home/pi/scripts/photobooth/bg.jpg /home/pi/photobooth_images/temp_montage2.jpg
+montage /home/pi/photobooth/images/*.jpg -tile 2x2 -geometry +30+30 -texture /home/pi/photobooth/media/bg.jpg /home/pi/photobooth/images/temp_montage2.jpg
 echo adding overlay
-composite -gravity center /home/pi/scripts/photobooth/overlay.png /home/pi/photobooth_images/temp_montage2.jpg /home/pi/photobooth_images/temp_montage3.jpg
-#lp -d Canon_CP900 /home/pi/temp_montage3.jpg
+composite -gravity center /home/pi/photobooth/media/overlay.png /home/pi/photobooth/images/temp_montage2.jpg /home/pi/photobooth/images/temp_montage3.jpg
 suffix=$(date +%F_%T)
 echo Saving montage
-cp /home/pi/photobooth_images/temp_montage3.jpg /home/pi/PB_archive/${suffix}.jpg
-cp /home/pi/photobooth_images/temp_montage3.jpg /home/pi/PB_archive/facebook.jpg
+cp /home/pi/photobooth/images/temp_montage3.jpg /home/pi/photobooth/archive/${suffix}.jpg
+cp /home/pi/photobooth/images/temp_montage3.jpg /home/pi/photobooth/archive/photobooth.jpg
+#lp -d Canon_CP900 /home/pi/photobooth/archive/photobooth.jpg
 echo cleaning up
-rm /home/pi/photobooth_images/*.jpg
-#rm /home/pi/temp*
+rm /home/pi/photobooth/images/*.jpg
+
