@@ -2,13 +2,17 @@
 
 import smtplib
 import time
-#import pbconf
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
+from pbconf import(
+	archive_path,
+	fromaddr
+	)
+	
 print("Starting Mailer")
-fromaddr = "takeyourownphoto@thepatman.co.uk"
+
 toaddr = "rob@eaglesfield.name"
 now = time.strftime("%Y-%m-%d-%H-%M-%S")
 msg = MIMEMultipart()
@@ -18,8 +22,8 @@ msg['Subject'] = "It's your PhotoBooth Picture!"
 body = 'Here is your picture taken at ' + now
 msg.attach(MIMEText(body, 'plain'))
 
-filename = "facebook.jpg"
-attachment = open("/home/pi/PB_archive/facebook.jpg", "rb")
+filename = "photobooth.jpg"
+attachment = open(archive_path + "photobooth.jpg", "rb")
 
 part = MIMEBase('application', 'octet-stream')
 part.set_payload((attachment).read())
