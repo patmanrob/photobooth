@@ -5,7 +5,7 @@ from gpiozero import Button
 import picamera
 import facebook
 from pbconf import(
-	file_path,
+	image_path,
 	fb_upload,
 	tw_upload,
 	em_upload
@@ -31,7 +31,7 @@ def main():
 			now = time.strftime("%Y-%m-%d-%H-%M-%S")
 			#camera.start_preview()
 			time.sleep(2) #warm up camera
-			filename = file_path + now + '.jpg'
+			filename = image_path + now + '.jpg'
 			camera.capture(filename)
 			print(filename)
 			#camera.stop_preview()
