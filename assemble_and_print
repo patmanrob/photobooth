@@ -2,7 +2,7 @@
 echo resizing
 mogrify -resize 968x648 /home/pi/photobooth/images/*.jpg
 echo Montage making
-montage /home/pi/photobooth/images/*.jpg -tile 2x2 -geometry +30+30 -texture /home/pi/photobooth/media/backgroundg.jpg /home/pi/photobooth/images/temp_montage2.jpg
+montage /home/pi/photobooth/images/*.jpg -tile 2x2 -geometry +30+30 -texture /home/pi/photobooth/media/background.jpg /home/pi/photobooth/images/temp_montage2.jpg
 echo adding overlay
 composite -gravity center /home/pi/photobooth/media/overlay.png /home/pi/photobooth/images/temp_montage2.jpg /home/pi/photobooth/images/temp_montage3.jpg
 suffix=$(date +%F_%T)

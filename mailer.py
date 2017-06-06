@@ -8,16 +8,19 @@ from email.mime.base import MIMEBase
 from email import encoders
 from pbconf import(
 	archive_path,
-	fromaddr
+	m_fromaddr,
+	m_toaddr,
+	m_server,
+	m_user,
+	m_pass
 	)
 	
 print("Starting Mailer")
 
-toaddr = "rob@eaglesfield.name"
 now = time.strftime("%Y-%m-%d-%H-%M-%S")
 msg = MIMEMultipart()
-msg['From'] = fromaddr
-msg['To'] = toaddr
+msg['From'] = m_fromaddr
+msg['To'] = m_toaddr
 msg['Subject'] = "It's your PhotoBooth Picture!"
 body = 'Here is your picture taken at ' + now
 msg.attach(MIMEText(body, 'plain'))
@@ -31,12 +34,12 @@ encoders.encode_base64(part)
 part.add_header('Content-Disposition', "attachment; filename= %s" % filename)
 msg.attach(part)
 print("Contacting Server")
-server = smtplib.SMTP('auth.smtp.1and1.co.uk', 587)
+server = smtplib.SMTP(m_server, 587)
 server.starttls()
-server.login("mail@thepatman.co.uk", "5p0ttyd0g")
+server.login(m_user, m_pass)
 text = msg.as_string()
 print("Sending email")
-server.sendmail(fromaddr, toaddr, text)
+server.sendmail(m_fromaddr, m_toaddr, text)
 server.quit()
 print("Done eMailing")
  

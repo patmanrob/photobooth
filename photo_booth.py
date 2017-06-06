@@ -18,46 +18,56 @@ button=Button(21)
 camera=picamera.PiCamera()
 camera.vflip=False
 camera.hflip=False
+camera.rotation= 90
+
 
 def main():
 	while True:
 		print ("Ready")
 		button.wait_for_press()#wait for button press to start
-		snap=0
+		print("Button Pressed")
+		snap=1
 		camera.start_preview()
 		time.sleep(2)
-		while snap<4:
-			print ("Taking Pic") #take 4 photos
+		while snap<=4:
+			print ("Taking Pic "+ str(snap)) #take 4 photos
 			now = time.strftime("%Y-%m-%d-%H-%M-%S")
-			#camera.start_preview()
 			time.sleep(2) #warm up camera
 			filename = image_path + now + '.jpg'
-			camera.capture(filename)
+			camera.capture(filename, resize=(968,648))
 			print(filename)
-			#camera.stop_preview()
 			snap+=1
 		camera.stop_preview()
 		print("Montaging")#Make the montage
-		subprocess.call("sudo /home/pi/scripts/photobooth/assemble_and_print", shell=True)
+		montager()
 		if fb_upload==True:
-			if os.path.isfile('/home/pi/scripts/photobooth/facebooker.py')==True:
+			if os.path.isfile('/home/pi/photobooth/facebooker.py')==True:
 				print("Facebooker is there,")
-				subprocess.call("/home/pi/scripts/photobooth/facebooker.py")
+				subprocess.call("/home/pi/photobooth/facebooker.py")
 				print ("Facebooker Done")
 		if tw_upload==True:
-			if os.path.isfile('/home/pi/scripts/photobooth/twitterer.py')==True:
+			if os.path.isfile('/home/pi/photobooth/twitterer.py')==True:
 				print("Twitterer is there, uploading to Twitter")
-				subprocess.call("/home/pi/scripts/photobooth/twitterer.py")
+				subprocess.call("/home/pi/photobooth/twitterer.py")
 				print("Twitterer done")
 		if em_upload==True:
-			if os.path.isfile('/home/pi/scripts/photobooth/mailer.py')==True:
+			if os.path.isfile('/home/pi/photobooth/mailer.py')==True:
 				print("Emailer is there. Sending")
-				subprocess.call("/home/pi/scripts/photobooth/mailer.py")
+				subprocess.call("/home/pi/photobooth/mailer.py")
 				print("Emailrer done")
 		print("ready for next round")
    
 
-
+def montager():
+	print("Montaging inside python")
+	subprocess.call("montage /home/pi/photobooth/images/*.jpg -tile 2x2 -geometry +30+30 -texture /home/pi/photobooth/media/background.jpg /home/pi/photobooth/images/temp_montage2.jpg", shell=True)
+	print("Done Montaging, adding overlay")
+	subprocess.call("composite -gravity center /home/pi/photobooth/media/overlay.png /home/pi/photobooth/images/temp_montage2.jpg /home/pi/photobooth/images/temp_montage3.jpg", shell=True)
+	print("Done, saving montage")
+	subprocess.call("cp /home/pi/photobooth/images/temp_montage3.jpg /home/pi/photobooth/archive/$(date +%F_%T).jpg", shell=True)
+	subprocess.call("cp /home/pi/photobooth/images/temp_montage3.jpg /home/pi/photobooth/archive/photobooth.jpg", shell=True)
+	print("Done, cleaning up")
+	subprocess.call("rm /home/pi/photobooth/images/*.jpg", shell=True)
 
 if __name__ == "__main__":
   main()
