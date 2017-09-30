@@ -10,3 +10,5 @@ to do:
 add send to instagram.
 user GUI
 Operator configuration options
+
+rename sample_pbconf.py to pbconf.py and edit adding your API credentials as neccessary
