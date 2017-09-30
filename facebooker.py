@@ -23,7 +23,7 @@ graph=facebook.GraphAPI(fb_access_token)
 
 print("Uploading")
 
-now = time.strftime("%Y-%m-%d-%H-%M-%S")
+now = time.strftime("%H:%M")
 status= graph.put_photo(image=open(archive_path +'photobooth.jpg','rb'), message = caption + now + " #TYO_Photo")
 print("Uploaded to Facebook")
 
